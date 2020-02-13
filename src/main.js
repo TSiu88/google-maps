@@ -13,13 +13,15 @@ $(document).ready(function(){
   $("#submit").click(function(event){
     event.preventDefault();
     (async () => {
-      const response = mapper.getLocation($("#address").val());
-      let lat = response.results[0].geometry.lat;
-      let lon = response.results[0].geometry.lng;
+      let address = $("#address").val();
+      // geocodeAddress(geocoder, map);
+      const response = await mapper.getLocation(address);
+      console.log(response);
+      let lat = response.results[0].geometry.location.lat;
+      let lon = response.results[0].geometry.location.lng;
       mapper.getMap(lat, lon);
     })();
   });
-
 });
 
 

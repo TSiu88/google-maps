@@ -4,8 +4,8 @@ export class Mapper {
 
   async getLocation(address){
     try {
-      let response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${address}&key=${process.env.API_KEY}`);
-      let jsonifiedResponse = response.json();
+      let response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.API_KEY}`);
+      let jsonifiedResponse = await response.json();
       return jsonifiedResponse; 
     } catch(error) {
       console.error("There was an error handling your request: " + error.message);
@@ -13,7 +13,7 @@ export class Mapper {
   }
 
   async getMap(latitude, longitude){
-    loadGoogleMapsApi({'key': process.env.API_KEY}).then(function (googleMaps) {
+    loadGoogleMapsApi({key: process.env.API_KEY}).then(function (googleMaps) {
       let map = new googleMaps.Map(document.querySelector('#map'), {
         center: {
           lat: latitude,
