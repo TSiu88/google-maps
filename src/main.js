@@ -8,19 +8,22 @@ $(document).ready(function(){
 
   let mapper = new Mapper();
   
-  // Set initial map to show Sydney
-  mapper.getMap(-34.397, 150.644);
+  // Set initial map to current location if permission given
+  mapper.getCurrentLocation();
 
+  // When input new location and click button
   $("#submit").click(function(event){
     event.preventDefault();
     (async () => {
-      // get address from input
+      // Get address from input
       let address = $("#address").val();
       const response = await mapper.getLocation(address);
 
-      //get latitude and longitude from json
+      // Get latitude and longitude from json
       let lat = response.results[0].geometry.location.lat;
       let lon = response.results[0].geometry.location.lng;
+
+      // Send coordinates to be displayed
       mapper.getMap(lat, lon);
     })();
   });
