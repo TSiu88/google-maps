@@ -4,7 +4,9 @@ export class Mapper {
 
   async getLocation(address){
     try {
+
       let response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.API_KEY}`);
+      
       let jsonifiedResponse = await response.json();
       return jsonifiedResponse; 
     } catch(error) {
