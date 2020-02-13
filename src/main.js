@@ -4,48 +4,22 @@ import './styles.css';
 import $ from 'jquery';
 import {Mapper} from './mapper';
 
-
-function initMap(map, geocoder){
-  map = new google.maps.Map(($("#map")), {
-    zoom: 8,
-    center: {lat: -34.397, lng: 150.644}
-  });
-  geocoder = new google.maps.Geocoder();
-}
-
 $(document).ready(function(){
-  
-  let map = new google.maps.Map(($("#map")), {
-    zoom: 8,
-    center: {lat: -34.397, lng: 150.644}
-  });
-  let geocoder = new google.maps.Geocoder();
+
   let mapper = new Mapper();
-  
-  initMap(map, geocoder);
+
+  mapper.getMap(-34.397, 150.644);
 
   $("#submit").click(function(event){
     event.preventDefault();
-
     (async () => {
-      geocodeAddress(geocoder, map);
+      const response = mapper.getLocation($("#address").val());
+      let lat = response.results[0].geometry.lat;
+      let lon = response.results[0].geometry.lng;
+      mapper.getMap(lat, lon);
     })();
   });
 
-  function geocodeAddress(geocoder, resultMap) {
-    let address = $("#address").val();
-    let result = geocoder.geocode({'address': address});
-    mapper.getMap(result, resultMap);
-
-    // output(newMap);
-  }
-
-  
-
-  // function output(map){
-  //   console.log(map);
-  // }
-  
 });
 
 

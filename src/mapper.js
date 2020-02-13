@@ -1,33 +1,29 @@
+import loadGoogleMapsApi from 'load-google-maps-api';
+
 export class Mapper {
 
-  async getMap(results, map){
-    try{
-      map.setCenter(results[0].geometry.location);
-      let marker = new google.maps.Marker({
-        map: map,
-        position: results[0].geometry.location
-      });
-      let response = await fetch(`https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}&callback=${marker.map}`);
-      let jsonifiedResponse = await response.json();
-      return jsonifiedResponse;
-    } catch(error){
-      console.error("Error handling request: " + error.message);
+  async getLocation(address){
+    try {
+      let response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${address}&key=${process.env.API_KEY}`);
+      let jsonifiedResponse = response.json();
+      return jsonifiedResponse; 
+    } catch(error) {
+      console.error("There was an error handling your request: " + error.message);
     }
   }
+
+  async getMap(latitude, longitude){
+    loadGoogleMapsApi({'key': process.env.API_KEY}).then(function (googleMaps) {
+      let map = new googleMaps.Map(document.querySelector('#map'), {
+        center: {
+          lat: latitude,
+          lng: longitude
+        },
+        zoom: 8
+      });
+      return map;
+    }).catch(function (error) {
+      console.error(error);
+    });
+  }
 }
-
-
-// function geocodeAddress(geocoder, resultsMap) {
-//   var address = document.getElementById('address').value;
-//   geocoder.geocode({'address': address}, function(results, status) {
-//     if (status === 'OK') {
-//       resultsMap.setCenter(results[0].geometry.location);
-//       var marker = new google.maps.Marker({
-//         map: resultsMap,
-//         position: results[0].geometry.location
-//       });
-//     } else {
-//       alert('Geocode was not successful for the following reason: ' + status);
-//     }
-//   });
-// }
