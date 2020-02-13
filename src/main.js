@@ -7,16 +7,18 @@ import {Mapper} from './mapper';
 $(document).ready(function(){
 
   let mapper = new Mapper();
-  console.log(process.env.API_KEY);
-
+  
+  // Set initial map to show Sydney
   mapper.getMap(-34.397, 150.644);
 
   $("#submit").click(function(event){
     event.preventDefault();
     (async () => {
+      // get address from input
       let address = $("#address").val();
       const response = await mapper.getLocation(address);
-      console.log(response);
+
+      //get latitude and longitude from json
       let lat = response.results[0].geometry.location.lat;
       let lon = response.results[0].geometry.location.lng;
       mapper.getMap(lat, lon);

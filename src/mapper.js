@@ -2,6 +2,7 @@ import loadGoogleMapsApi from 'load-google-maps-api';
 
 export class Mapper {
 
+  // Use address from input to get json from geocoder
   async getLocation(address){
     try {
 
@@ -14,6 +15,7 @@ export class Mapper {
     }
   }
 
+  // use coordinates to display new map centered at the area using npm loadGoogleMapsApi
   async getMap(latitude, longitude){
     loadGoogleMapsApi({key: process.env.API_KEY}).then(function (googleMaps) {
       let map = new googleMaps.Map(document.querySelector('#map'), {
